@@ -26,12 +26,12 @@ public class AvailableEvents extends JFrame {
 
         // Header
         JPanel header = new JPanel();
-        header.setBackground(new Color(0, 128, 60));
+        header.setBackground(new Color(27, 94, 32));
         header.setBounds(0, 0, 500, 55);
 
         JLabel title = new JLabel("Available Events");
         title.setForeground(Color.WHITE);
-        title.setFont(new Font("Arial", Font.BOLD, 20));
+        title.setFont(new Font("Arial", Font.BOLD, 24));
 
         header.add(title);
         panel.add(header);
@@ -60,7 +60,7 @@ public class AvailableEvents extends JFrame {
         // Back button
         JButton backButton = new JButton("Back");
         backButton.setBounds(190, 240, 120, 35);
-        backButton.setBackground(new Color(0, 128, 60));
+        backButton.setBackground(new Color(27, 94, 32));
         backButton.setForeground(Color.WHITE);
         backButton.setFocusPainted(false);
         panel.add(backButton);
