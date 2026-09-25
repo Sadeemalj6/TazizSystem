@@ -90,7 +90,15 @@ public class HomeAdmin extends JFrame {
         mainPanel.add(contentPanel, BorderLayout.CENTER);
 
         add(mainPanel);
-    }}
+    }
+}
+    // =========================
+    // Main Method
+    // =========================
+    public static void main(String[] args) {
 
+        HomeAdmin HomeAdminFrame = new HomeAdmin();
+        HomeAdminFrame.setVisible(true);
+    }
 
 
