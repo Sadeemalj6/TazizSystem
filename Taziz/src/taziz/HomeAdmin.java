@@ -3,102 +3,183 @@ package taziz;
 import javax.swing.*;
 import java.awt.*;
 
-
 public class HomeAdmin extends JFrame {
 
     public HomeAdmin() {
 
-        // Window
         setTitle("Frame 2 - Home Admin");
         setSize(500, 350);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        // Main panel
         JPanel mainPanel = new JPanel(new BorderLayout());
         mainPanel.setBackground(Color.WHITE);
 
         // =========================
-        // Top Green Bar
+        // Top Bar
         // =========================
-        JPanel topPanel = new JPanel(new BorderLayout());
-        topPanel.setBackground(new Color(27, 94, 32));
-        topPanel.setPreferredSize(new Dimension(500, 60));
 
-        JLabel logoLabel = new JLabel("TAAZIZ");
+        JPanel topPanel =
+                new JPanel(new BorderLayout());
+
+        topPanel.setBackground(
+                new Color(27, 94, 32)
+        );
+
+        topPanel.setPreferredSize(
+                new Dimension(500, 60)
+        );
+
+        JLabel logoLabel =
+                new JLabel("TAAZIZ");
+
         logoLabel.setForeground(Color.WHITE);
-        logoLabel.setFont(new Font("Arial", Font.BOLD, 24));
-        logoLabel.setHorizontalAlignment(SwingConstants.CENTER);
+
+        logoLabel.setFont(
+                new Font("Arial", Font.BOLD, 24)
+        );
+
+        logoLabel.setHorizontalAlignment(
+                SwingConstants.CENTER
+        );
 
         topPanel.add(logoLabel);
 
-        mainPanel.add(topPanel, BorderLayout.NORTH);
+        mainPanel.add(
+                topPanel,
+                BorderLayout.NORTH
+        );
 
         // =========================
-        // Main Content
+        // Content
         // =========================
+
         JPanel contentPanel = new JPanel();
-        contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
+
+        contentPanel.setLayout(
+                new BoxLayout(
+                        contentPanel,
+                        BoxLayout.Y_AXIS
+                )
+        );
+
         contentPanel.setBackground(Color.WHITE);
 
         contentPanel.setBorder(
-                BorderFactory.createEmptyBorder(35, 60, 20, 60)
+                BorderFactory.createEmptyBorder(
+                        35, 60, 20, 60
+                )
         );
 
-        // Welcome Title
-        JLabel welcomeLabel = new JLabel("Welcome to Taaziz");
-        welcomeLabel.setFont(new Font("Arial", Font.BOLD, 20));
-        welcomeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        JLabel welcomeLabel =
+                new JLabel("Welcome to Taaziz");
+
+        welcomeLabel.setFont(
+                new Font("Arial", Font.BOLD, 20)
+        );
+
+        welcomeLabel.setAlignmentX(
+                Component.CENTER_ALIGNMENT
+        );
 
         contentPanel.add(welcomeLabel);
 
-        contentPanel.add(Box.createVerticalStrut(30));
+        contentPanel.add(
+                Box.createVerticalStrut(30)
+        );
 
-        // =========================
-        // Register for Event Button
-        // =========================
-        JButton registerButton = new JButton("Add an Event");
+        // Add Event
 
-        registerButton.setBackground(new Color(27, 94, 32));
-        registerButton.setForeground(Color.WHITE);
-        registerButton.setFont(new Font("Arial", Font.BOLD, 16));
-        registerButton.setFocusPainted(false);
-        registerButton.setPreferredSize(new Dimension(220, 45));
-        registerButton.setMaximumSize(new Dimension(220, 45));
-        registerButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        JButton addEventButton =
+                new JButton("Add an Event");
 
-        contentPanel.add(registerButton);
+        addEventButton.setBackground(
+                new Color(27, 94, 32)
+        );
 
-        contentPanel.add(Box.createVerticalStrut(15));
+        addEventButton.setForeground(Color.WHITE);
 
-        // =========================
-        // Logout Button
-        // =========================
-        JButton logoutButton = new JButton("Logout");
+        addEventButton.setFont(
+                new Font("Arial", Font.BOLD, 16)
+        );
 
-        logoutButton.setBackground(new Color(27, 94, 32));
+        addEventButton.setFocusPainted(false);
+
+        addEventButton.setPreferredSize(
+                new Dimension(220, 45)
+        );
+
+        addEventButton.setMaximumSize(
+                new Dimension(220, 45)
+        );
+
+        addEventButton.setAlignmentX(
+                Component.CENTER_ALIGNMENT
+        );
+
+        contentPanel.add(addEventButton);
+
+        contentPanel.add(
+                Box.createVerticalStrut(15)
+        );
+
+        // Logout
+
+        JButton logoutButton =
+                new JButton("Logout");
+
+        logoutButton.setBackground(
+                new Color(27, 94, 32)
+        );
+
         logoutButton.setForeground(Color.WHITE);
-        logoutButton.setFont(new Font("Arial", Font.BOLD, 16));
 
-        logoutButton.setPreferredSize(new Dimension(220, 45));
-        logoutButton.setMaximumSize(new Dimension(220, 45));
-        logoutButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        logoutButton.setFont(
+                new Font("Arial", Font.BOLD, 16)
+        );
+
+        logoutButton.setPreferredSize(
+                new Dimension(220, 45)
+        );
+
+        logoutButton.setMaximumSize(
+                new Dimension(220, 45)
+        );
+
+        logoutButton.setAlignmentX(
+                Component.CENTER_ALIGNMENT
+        );
 
         contentPanel.add(logoutButton);
 
-        // Add content
-        mainPanel.add(contentPanel, BorderLayout.CENTER);
+        // =========================
+        // Actions
+        // =========================
+
+        addEventButton.addActionListener(e -> {
+
+            new AddEvent().setVisible(true);
+            dispose();
+
+        });
+
+        logoutButton.addActionListener(e -> {
+
+            new Login().setVisible(true);
+            dispose();
+
+        });
+
+        mainPanel.add(
+                contentPanel,
+                BorderLayout.CENTER
+        );
 
         add(mainPanel);
     }
 
-    // =========================
-    // Main Method
-    // =========================
     public static void main(String[] args) {
 
-        HomeAdmin HomeAdminFrame = new HomeAdmin();
-        HomeAdminFrame.setVisible(true);
+        new HomeAdmin().setVisible(true);
     }
-
 }
