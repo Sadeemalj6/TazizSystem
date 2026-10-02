@@ -17,7 +17,7 @@ public class Taziz {
         
         new AddEvent().setVisible(true);
         new AvailableEvents().setVisible(true);
-
+        ConfirmationFile.createConfirmation();
     }
     
 }
