@@ -15,8 +15,7 @@ public class Taziz {
      */
     public static void main(String[] args) {
         
-        new AddEvent().setVisible(true);
-        new AvailableEvents().setVisible(true);
+        new Login().setVisible(true);
         
     }
     
