@@ -91,7 +91,7 @@ public class HomeAdmin extends JFrame {
 
         add(mainPanel);
     }
-}
+
     // =========================
     // Main Method
     // =========================
@@ -101,4 +101,4 @@ public class HomeAdmin extends JFrame {
         HomeAdminFrame.setVisible(true);
     }
 
-
+}
