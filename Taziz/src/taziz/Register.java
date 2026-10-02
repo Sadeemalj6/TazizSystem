@@ -134,6 +134,11 @@ public class Register extends JFrame {
 
         // Register button
         registerButton.addActionListener(e -> {
+             ConfirmationFile.createConfirmation(
+            "University Innovation Day",
+            "October 10, 2026",
+            "King Abdulaziz University"
+    );
             JOptionPane.showMessageDialog(
                     this,
                     "Registration Successful!"

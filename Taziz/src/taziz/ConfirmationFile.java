@@ -8,20 +8,14 @@ import java.io.IOException;
 
 public class ConfirmationFile {
 
-    public static void createConfirmation() {
-
-        String studentID = "2212345";
-        String eventName = "AI Workshop";
-        String date = "10/10/2026";
-        String location = "FCIT Building";
+     public static void createConfirmation(String eventName, String date, String location) {
 
         try {
             FileWriter writer = new FileWriter("confirmation.txt");
 
             writer.write("TAAZIZ - Registration Confirmation\n");
             writer.write("--------------------------------\n");
-            writer.write("Student ID: " + studentID + "\n");
-            writer.write("Event: " + eventName + "\n");
+            writer.write("Event Name: " + eventName + "\n");
             writer.write("Date: " + date + "\n");
             writer.write("Location: " + location + "\n");
             writer.write("Status: Confirmed\n");
