@@ -1,32 +1,31 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package taziz;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class Login extends JFrame {
 
+    private JTextField studentIDField;
+    private JPasswordField passwordField;
+
     public Login() {
 
-        // Window
         setTitle("Frame 1 - Login");
         setSize(500, 350);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-
         // =========================
         // Main Panel
         // =========================
+
         JPanel mainPanel = new JPanel(new BorderLayout());
         mainPanel.setBackground(Color.WHITE);
-
 
         // =========================
         // Top Green Bar
         // =========================
+
         JPanel topPanel = new JPanel(new BorderLayout());
         topPanel.setBackground(new Color(27, 94, 32));
         topPanel.setPreferredSize(new Dimension(500, 60));
@@ -40,10 +39,10 @@ public class Login extends JFrame {
 
         mainPanel.add(topPanel, BorderLayout.NORTH);
 
+        // =========================
+        // Form
+        // =========================
 
-        // =========================
-        // Login Form
-        // =========================
         JPanel formPanel = new JPanel();
         formPanel.setLayout(new BoxLayout(formPanel, BoxLayout.Y_AXIS));
         formPanel.setBackground(Color.WHITE);
@@ -52,10 +51,8 @@ public class Login extends JFrame {
                 BorderFactory.createEmptyBorder(25, 60, 20, 60)
         );
 
-
-        // =========================
         // Title
-        // =========================
+
         JLabel titleLabel =
                 new JLabel("University Events Registration System");
 
@@ -66,10 +63,10 @@ public class Login extends JFrame {
 
         formPanel.add(Box.createVerticalStrut(25));
 
-
         // =========================
         // Student ID
         // =========================
+
         JPanel studentPanel =
                 new JPanel(new FlowLayout(FlowLayout.CENTER, 8, 0));
 
@@ -79,7 +76,7 @@ public class Login extends JFrame {
         JLabel studentIDLabel = new JLabel("Student ID:");
         studentIDLabel.setFont(new Font("Arial", Font.BOLD, 13));
 
-        JTextField studentIDField = new JTextField();
+        studentIDField = new JTextField();
         studentIDField.setPreferredSize(new Dimension(220, 30));
 
         studentPanel.add(studentIDLabel);
@@ -89,10 +86,10 @@ public class Login extends JFrame {
 
         formPanel.add(Box.createVerticalStrut(5));
 
-
         // =========================
         // Password
         // =========================
+
         JPanel passwordPanel =
                 new JPanel(new FlowLayout(FlowLayout.CENTER, 8, 0));
 
@@ -102,7 +99,7 @@ public class Login extends JFrame {
         JLabel passwordLabel = new JLabel("Password:");
         passwordLabel.setFont(new Font("Arial", Font.BOLD, 13));
 
-        JPasswordField passwordField = new JPasswordField();
+        passwordField = new JPasswordField();
         passwordField.setPreferredSize(new Dimension(220, 30));
 
         passwordPanel.add(passwordLabel);
@@ -112,10 +109,10 @@ public class Login extends JFrame {
 
         formPanel.add(Box.createVerticalStrut(18));
 
-
         // =========================
         // Login Button
         // =========================
+
         JButton loginButton = new JButton("Login");
 
         loginButton.setBackground(new Color(27, 94, 32));
@@ -129,22 +126,47 @@ public class Login extends JFrame {
 
         formPanel.add(loginButton);
 
+        // =========================
+        // Login Action
+        // =========================
 
-        // Add Form to Main Panel
+        loginButton.addActionListener(e -> {
+
+            String id = studentIDField.getText().trim();
+            String password =
+                    new String(passwordField.getPassword());
+
+            if (id.isEmpty() || password.isEmpty()) {
+
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Please enter Student ID and Password."
+                );
+
+                return;
+            }
+
+            // Admin Login
+            if (id.equals("admin") && password.equals("admin123")) {
+
+                new HomeAdmin().setVisible(true);
+                dispose();
+
+            } else {
+
+                // Student Login
+                new Home().setVisible(true);
+                dispose();
+            }
+        });
+
         mainPanel.add(formPanel, BorderLayout.CENTER);
 
-
-        // Add Main Panel to Window
         add(mainPanel);
     }
 
-
-    // =========================
-    // Main Method
-    // =========================
     public static void main(String[] args) {
 
-        Login loginFrame = new Login();
-        loginFrame.setVisible(true);
+        new Login().setVisible(true);
     }
 }
