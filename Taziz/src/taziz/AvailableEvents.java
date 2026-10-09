@@ -9,212 +9,102 @@ package taziz;
  * @author sdoom
  */
 
+
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
+import java.util.List;
 
 public class AvailableEvents extends JFrame {
-
-    private JPanel eventsPanel;
+    private final JPanel eventsPanel = new JPanel();
 
     public AvailableEvents() {
-
-        setTitle("Taaziz University Events Registration System");
+        setTitle("Taaziz - Available Events");
         setSize(500, 400);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        JPanel mainPanel =
-                new JPanel(new BorderLayout());
-
+        JPanel mainPanel = new JPanel(new BorderLayout());
         mainPanel.setBackground(Color.WHITE);
 
-        // =========================
-        // Header
-        // =========================
-
-        JPanel header =
-                new JPanel(new BorderLayout());
-
-        header.setBackground(
-                new Color(27, 94, 32)
-        );
-
-        header.setPreferredSize(
-                new Dimension(500, 55)
-        );
-
-        JLabel title =
-                new JLabel("Available Events");
-
+        JPanel header = new JPanel(new BorderLayout());
+        header.setBackground(new Color(27, 94, 32));
+        header.setPreferredSize(new Dimension(500, 55));
+        JLabel title = new JLabel("Available Events", SwingConstants.CENTER);
         title.setForeground(Color.WHITE);
-
-        title.setFont(
-                new Font("Arial", Font.BOLD, 24)
-        );
-
-        title.setHorizontalAlignment(
-                SwingConstants.CENTER
-        );
-
+        title.setFont(new Font("Arial", Font.BOLD, 24));
         header.add(title);
+        mainPanel.add(header, BorderLayout.NORTH);
 
-        mainPanel.add(
-                header,
-                BorderLayout.NORTH
-        );
-
-        // =========================
-        // Events Panel
-        // =========================
-
-        eventsPanel = new JPanel();
-
-        eventsPanel.setLayout(
-                new BoxLayout(
-                        eventsPanel,
-                        BoxLayout.Y_AXIS
-                )
-        );
-
+        eventsPanel.setLayout(new BoxLayout(eventsPanel, BoxLayout.Y_AXIS));
         eventsPanel.setBackground(Color.WHITE);
+        eventsPanel.setBorder(BorderFactory.createEmptyBorder(20, 25, 10, 25));
 
-        eventsPanel.setBorder(
-                BorderFactory.createEmptyBorder(
-                        20, 40, 10, 40
-                )
-        );
-
-        loadEvents();
-
-        JScrollPane scrollPane =
-                new JScrollPane(eventsPanel);
-
+        JScrollPane scrollPane = new JScrollPane(eventsPanel);
         scrollPane.setBorder(null);
+        mainPanel.add(scrollPane, BorderLayout.CENTER);
 
-        mainPanel.add(
-                scrollPane,
-                BorderLayout.CENTER
-        );
-
-        // =========================
-        // Back
-        // =========================
-
-        JButton backButton =
-                new JButton("Back");
-
-        backButton.setBackground(
-                new Color(27, 94, 32)
-        );
-
+        JButton backButton = new JButton("Back");
+        backButton.setBackground(new Color(27, 94, 32));
         backButton.setForeground(Color.WHITE);
-
         backButton.setFocusPainted(false);
-
-        backButton.setPreferredSize(
-                new Dimension(100, 35)
-        );
-
+        backButton.setPreferredSize(new Dimension(100, 35));
         backButton.addActionListener(e -> {
-
             new Home().setVisible(true);
             dispose();
-
         });
-
-        JPanel bottomPanel =
-                new JPanel();
-
+        JPanel bottomPanel = new JPanel();
         bottomPanel.setBackground(Color.WHITE);
-
         bottomPanel.add(backButton);
-
-        mainPanel.add(
-                bottomPanel,
-                BorderLayout.SOUTH
-        );
+        mainPanel.add(bottomPanel, BorderLayout.SOUTH);
 
         add(mainPanel);
+        loadEvents();
     }
 
-    // =========================
-    // Load Events
-    // =========================
-
     private void loadEvents() {
-
         eventsPanel.removeAll();
-
-        if (EventManager.getEvents().isEmpty()) {
-
-            JLabel noEventsLabel =
-                    new JLabel("No events available.");
-
-            noEventsLabel.setFont(
-                    new Font("Arial", Font.BOLD, 16)
-            );
-
-            noEventsLabel.setAlignmentX(
-                    Component.CENTER_ALIGNMENT
-            );
-
-            eventsPanel.add(noEventsLabel);
-
-        } else {
-
-            for (int i = 0;
-                    i < EventManager.getEvents().size();
-                    i++) {
-
-                Event event =
-                        EventManager.getEvent(i);
-
-                JButton eventButton =
-                        new JButton(
-                                event.getName()
-                                + "  |  Seats: "
-                                + event.getAvailableSeats()
-                );
-
-                eventButton.setFont(
-                        new Font("Arial", Font.BOLD, 14)
-                );
-
-                eventButton.setMaximumSize(
-                        new Dimension(400, 45)
-                );
-
-                eventButton.setAlignmentX(
-                        Component.CENTER_ALIGNMENT
-                );
-
-                final int eventIndex = i;
-
-                eventButton.addActionListener(e -> {
-
-                    Event selectedEvent =
-                            EventManager.getEvent(eventIndex);
-
-                    new Register(selectedEvent)
-                            .setVisible(true);
-
-                    dispose();
-                });
-
-                eventsPanel.add(eventButton);
-
-                eventsPanel.add(
-                        Box.createVerticalStrut(10)
-                );
+        try {
+            List<Event> events = EventFile.getAllEvents();
+            if (events.isEmpty()) {
+                JLabel noEvents = new JLabel("No events available.");
+                noEvents.setAlignmentX(Component.CENTER_ALIGNMENT);
+                eventsPanel.add(noEvents);
+            } else {
+                for (Event event : events) {
+                    String buttonText = event.getName() + " | Seats: "
+                            + event.getAvailableSeats() + " | " + event.getDate();
+                    JButton eventButton = new JButton(buttonText);
+                    eventButton.setFont(new Font("Arial", Font.BOLD, 13));
+                    eventButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+                    eventButton.setMaximumSize(new Dimension(420, 45));
+                    eventButton.addActionListener(e -> {
+                        try {
+                            Event latestEvent = EventFile.getEvent(event.getId());
+                            if (latestEvent == null) {
+                                JOptionPane.showMessageDialog(this, "This event no longer exists.");
+                                loadEvents();
+                            } else {
+                                new Register(latestEvent).setVisible(true);
+                                dispose();
+                            }
+                        } catch (IOException ex) {
+                            JOptionPane.showMessageDialog(this, "Could not read event file: " + ex.getMessage());
+                        }
+                    });
+                    eventsPanel.add(eventButton);
+                    eventsPanel.add(Box.createVerticalStrut(10));
+                }
             }
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, "Could not read events: " + ex.getMessage(),
+                    "File Error", JOptionPane.ERROR_MESSAGE);
         }
-
         eventsPanel.revalidate();
         eventsPanel.repaint();
     }
 
     public static void main(String[] args) {
-
-        new AvailableEvents().setVisible(true);
+        SwingUtilities.invokeLater(() -> new AvailableEvents().setVisible(true));
     }
 }
