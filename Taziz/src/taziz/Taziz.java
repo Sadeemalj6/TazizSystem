@@ -8,15 +8,15 @@ package taziz;
  *
  * @author sdoom
  */
+import javax.swing.SwingUtilities;
+
 public class Taziz {
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        
-        new Login().setVisible(true);
-        
+        SwingUtilities.invokeLater(() -> new Login().setVisible(true));
     }
-    
 }
+
