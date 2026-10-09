@@ -2,306 +2,135 @@ package taziz;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 
 public class Register extends JFrame {
-
-    private Event event;
+    private final long eventId;
+    private JLabel seatsLabel;
+    private JButton registerButton;
 
     public Register(Event event) {
+        this.eventId = event.getId();
 
-        this.event = event;
-
-        setTitle("Frame 3 - Event Details");
-        setSize(500, 350);
+        setTitle("TAAZIZ - Event Details");
+        setSize(500, 370);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        // =========================
-        // Main Panel
-        // =========================
-
-        JPanel mainPanel =
-                new JPanel(new BorderLayout());
-
+        JPanel mainPanel = new JPanel(new BorderLayout());
         mainPanel.setBackground(Color.WHITE);
 
-        // =========================
-        // Header
-        // =========================
-
-        JPanel topPanel =
-                new JPanel(new BorderLayout());
-
-        topPanel.setBackground(
-                new Color(27, 94, 32)
-        );
-
-        topPanel.setPreferredSize(
-                new Dimension(500, 60)
-        );
-
-        JLabel logoLabel =
-                new JLabel("TAAZIZ");
-
+        JPanel topPanel = new JPanel(new BorderLayout());
+        topPanel.setBackground(new Color(27, 94, 32));
+        topPanel.setPreferredSize(new Dimension(500, 60));
+        JLabel logoLabel = new JLabel("TAAZIZ", SwingConstants.CENTER);
         logoLabel.setForeground(Color.WHITE);
-
-        logoLabel.setFont(
-                new Font("Arial", Font.BOLD, 24)
-        );
-
-        logoLabel.setHorizontalAlignment(
-                SwingConstants.CENTER
-        );
-
+        logoLabel.setFont(new Font("Arial", Font.BOLD, 24));
         topPanel.add(logoLabel);
+        mainPanel.add(topPanel, BorderLayout.NORTH);
 
-        mainPanel.add(
-                topPanel,
-                BorderLayout.NORTH
-        );
-
-        // =========================
-        // Details
-        // =========================
-
-        JPanel detailsPanel =
-                new JPanel();
-
-        detailsPanel.setLayout(
-                new BoxLayout(
-                        detailsPanel,
-                        BoxLayout.Y_AXIS
-                )
-        );
-
+        JPanel detailsPanel = new JPanel();
+        detailsPanel.setLayout(new BoxLayout(detailsPanel, BoxLayout.Y_AXIS));
         detailsPanel.setBackground(Color.WHITE);
+        detailsPanel.setBorder(BorderFactory.createEmptyBorder(20, 40, 15, 40));
 
-        detailsPanel.setBorder(
-                BorderFactory.createEmptyBorder(
-                        25, 60, 20, 60
-                )
-        );
-
-        JLabel titleLabel =
-                new JLabel("Event Details");
-
-        titleLabel.setFont(
-                new Font("Arial", Font.BOLD, 20)
-        );
-
-        titleLabel.setAlignmentX(
-                Component.CENTER_ALIGNMENT
-        );
-
+        JLabel titleLabel = new JLabel("Event Details");
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         detailsPanel.add(titleLabel);
+        detailsPanel.add(Box.createVerticalStrut(15));
 
-        detailsPanel.add(
-                Box.createVerticalStrut(20)
-        );
-
-        // Event Name
-
-        JLabel eventNameLabel =
-                new JLabel(
-                        "Event Name: "
-                        + event.getName()
-                );
-
-        eventNameLabel.setFont(
-                new Font("Arial", Font.BOLD, 14)
-        );
-
-        eventNameLabel.setAlignmentX(
-                Component.CENTER_ALIGNMENT
-        );
-
-        detailsPanel.add(eventNameLabel);
-
-        detailsPanel.add(
-                Box.createVerticalStrut(10)
-        );
-
-        // Date
-
-        JLabel dateLabel =
-                new JLabel(
-                        "Date: "
-                        + event.getDate()
-                );
-
-        dateLabel.setFont(
-                new Font("Arial", Font.PLAIN, 14)
-        );
-
-        dateLabel.setAlignmentX(
-                Component.CENTER_ALIGNMENT
-        );
-
-        detailsPanel.add(dateLabel);
-
-        detailsPanel.add(
-                Box.createVerticalStrut(10)
-        );
-
-        // Location
-
-        JLabel locationLabel =
-                new JLabel(
-                        "Location: "
-                        + event.getLocation()
-                );
-
-        locationLabel.setFont(
-                new Font("Arial", Font.PLAIN, 14)
-        );
-
-        locationLabel.setAlignmentX(
-                Component.CENTER_ALIGNMENT
-        );
-
-        detailsPanel.add(locationLabel);
-
-        detailsPanel.add(
-                Box.createVerticalStrut(10)
-        );
-
-        // Seats
-
-        JLabel seatsLabel =
-                new JLabel(
-                        "Available Seats: "
-                        + event.getAvailableSeats()
-                );
-
-        seatsLabel.setFont(
-                new Font("Arial", Font.BOLD, 14)
-        );
-
-        seatsLabel.setAlignmentX(
-                Component.CENTER_ALIGNMENT
-        );
-
+        addCenteredLabel(detailsPanel, "Event Name: " + event.getName(), true);
+        addCenteredLabel(detailsPanel, "Date: " + event.getDate(), false);
+        addCenteredLabel(detailsPanel, "Time: " + event.getTime(), false);
+        addCenteredLabel(detailsPanel, "Location: " + event.getLocation(), false);
+        seatsLabel = new JLabel("Available Seats: " + event.getAvailableSeats());
+        seatsLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        seatsLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         detailsPanel.add(seatsLabel);
+        detailsPanel.add(Box.createVerticalStrut(15));
 
-        detailsPanel.add(
-                Box.createVerticalStrut(20)
-        );
-
-        // =========================
-        // Buttons
-        // =========================
-
-        JPanel buttonPanel =
-                new JPanel(
-                        new FlowLayout(
-                                FlowLayout.CENTER,
-                                15,
-                                0
-                        )
-                );
-
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 0));
         buttonPanel.setBackground(Color.WHITE);
+        registerButton = new JButton("Register");
+        styleButton(registerButton);
+        registerButton.setPreferredSize(new Dimension(100, 32));
+        registerButton.setEnabled(event.getAvailableSeats() > 0);
 
-        JButton registerButton =
-                new JButton("Register");
-
-        registerButton.setBackground(
-                new Color(27, 94, 32)
-        );
-
-        registerButton.setForeground(Color.WHITE);
-
-        registerButton.setFont(
-                new Font("Arial", Font.BOLD, 13)
-        );
-
-        registerButton.setPreferredSize(
-                new Dimension(100, 32)
-        );
-
-        registerButton.setFocusPainted(false);
-
-        JButton backButton =
-                new JButton("Back");
-
-        backButton.setFont(
-                new Font("Arial", Font.BOLD, 13)
-        );
-
-        backButton.setPreferredSize(
-                new Dimension(100, 32)
-        );
-
+        JButton backButton = new JButton("Back");
+        backButton.setPreferredSize(new Dimension(100, 32));
         backButton.setFocusPainted(false);
-
         buttonPanel.add(registerButton);
         buttonPanel.add(backButton);
-
         detailsPanel.add(buttonPanel);
 
-        // =========================
-        // Register Action
-        // =========================
+        registerButton.addActionListener(e -> registerForEvent());
+        backButton.addActionListener(e -> {
+            new AvailableEvents().setVisible(true);
+            dispose();
+        });
 
-        registerButton.addActionListener(e -> {
+        mainPanel.add(detailsPanel, BorderLayout.CENTER);
+        add(mainPanel);
+    }
 
-            if (event.getAvailableSeats() <= 0) {
+    private void addCenteredLabel(JPanel panel, String text, boolean bold) {
+        JLabel label = new JLabel(text);
+        label.setFont(new Font("Arial", bold ? Font.BOLD : Font.PLAIN, 14));
+        label.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panel.add(label);
+        panel.add(Box.createVerticalStrut(8));
+    }
 
-                JOptionPane.showMessageDialog(
-                        this,
-                        "Sorry, no seats are available.",
-                        "Registration Full",
-                        JOptionPane.WARNING_MESSAGE
-                );
+    private void styleButton(JButton button) {
+        button.setBackground(new Color(27, 94, 32));
+        button.setForeground(Color.WHITE);
+        button.setFont(new Font("Arial", Font.BOLD, 13));
+        button.setFocusPainted(false);
+    }
 
+    private void registerForEvent() {
+        Account student = CurrentUser.getAccount();
+        if (student == null || student.isAdmin()) {
+            JOptionPane.showMessageDialog(this, "Please log in with a student account.");
+            return;
+        }
+
+        try {
+            Event latest = EventFile.getEvent(eventId);
+            if (latest == null) {
+                JOptionPane.showMessageDialog(this, "This event could not be found.");
+                return;
+            }
+            if (latest.getAvailableSeats() <= 0) {
+                seatsLabel.setText("Available Seats: 0");
+                registerButton.setEnabled(false);
+                JOptionPane.showMessageDialog(this, "Sorry, no seats are available.");
                 return;
             }
 
-            // Decrease seat
-            boolean registered =
-                    event.registerStudent();
-
-            if (registered) {
-
-                ConfirmationFile.createConfirmation(
-                        event.getName(),
-                        event.getDate(),
-                        event.getLocation()
-                );
-
-                JOptionPane.showMessageDialog(
-                        this,
-                        "Registration Successful!"
-                );
-
-                // Update displayed seats
-                seatsLabel.setText(
-                        "Available Seats: "
-                        + event.getAvailableSeats()
-                );
-
-                registerButton.setEnabled(
-                        event.getAvailableSeats() > 0
-                );
+            if (!EventFile.reserveSeat(eventId)) {
+                JOptionPane.showMessageDialog(this, "Sorry, no seats are available.");
+                refreshSeats();
+                return;
             }
-        });
 
-        // =========================
-        // Back
-        // =========================
+            Event updated = EventFile.getEvent(eventId);
+            ConfirmationFile.createConfirmation(student, updated);
 
-        backButton.addActionListener(e -> {
+            refreshSeats();
+            JOptionPane.showMessageDialog(this, "Registration Successful!");
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, "Could not process registration: " + ex.getMessage(),
+                    "File Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
-            new AvailableEvents().setVisible(true);
-            dispose();
-
-        });
-
-        mainPanel.add(
-                detailsPanel,
-                BorderLayout.CENTER
-        );
-
-        add(mainPanel);
+    private void refreshSeats() throws IOException {
+        Event latest = EventFile.getEvent(eventId);
+        if (latest != null) {
+            seatsLabel.setText("Available Seats: " + latest.getAvailableSeats());
+            registerButton.setEnabled(latest.getAvailableSeats() > 0);
+        }
     }
 }
