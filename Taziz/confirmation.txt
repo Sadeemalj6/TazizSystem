@@ -1,0 +1,12 @@
+TAAZIZ - Registration Confirmation
+==================================
+Registration time: 2026-10-09 18:28:06
+Student name: Sample Student
+University ID: 2300000
+Event ID: 1
+Event name: Ai workShop
+Date: 1/1/2027
+Time: 4:00pm
+Location: kau
+Status: Confirmed
+
